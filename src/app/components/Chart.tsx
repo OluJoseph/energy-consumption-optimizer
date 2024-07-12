@@ -19,7 +19,7 @@ const Chart = ({ dataset }: ChartProps) => {
 
   useEffect(() => {
     setIsDarkMode(window?.matchMedia("(prefers-color-scheme: dark)").matches);
-  }, []);
+  }, [window?.matchMedia("(prefers-color-scheme: dark)")]);
 
   return (
     <div className="w-full">
