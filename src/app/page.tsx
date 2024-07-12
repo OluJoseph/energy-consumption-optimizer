@@ -58,7 +58,7 @@ export default function Home() {
                 <p className="font-semibold text-gray-800 dark:text-slate-300 mb-1 text-sm">
                   Power Alert
                 </p>
-                <p className="text-sm text-gray-600 mb-2">
+                <p className="text-sm text-gray-600 mb-2 max-w-[340px]">
                   This appliance is using above its threshold power. Kindly take
                   action
                 </p>
@@ -105,7 +105,7 @@ export default function Home() {
             <TableGrid rowData={appliances} columnDefs={columnDefs} />
           </div>
         </div>
-        <div className="flex flex-col gap-4 h-fit max-h-[400px]">
+        <div className="shrink flex flex-col gap-4 h-fit max-h-[400px]">
           <div className="p-4 bg-white dark:bg-gray-900 rounded-lg border border-gray-100 dark:border-gray-800 min-h-[400px] h-fit flex flex-col ">
             <p className="pb-2 text-gray-700 dark:text-slate-300 font-semibold border-b border-gray-100 dark:border-gray-800">
               Alerts
@@ -127,7 +127,7 @@ export default function Home() {
                   switches
                 </span>
                 <div>
-                  <p className="text-sm mb-1">You turned off Air Conditioner</p>
+                  <p className="text-sm mb-1 max-w-[340px]">You turned off Air Conditioner</p>
                   <p className="text-sm text-gray-500">Updated 1 minutes ago</p>
                 </div>
               </li>
