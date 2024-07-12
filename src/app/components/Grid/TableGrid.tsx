@@ -3,12 +3,17 @@
 import React, { useState, forwardRef, useRef } from "react";
 
 import { DeviceStatus, GridProps, IDeviceData } from "@/app/util/constants";
+import { createPortal } from "react-dom";
+
+import Appliance from "../Appliance";
 
 const TableGrid = forwardRef(function TableGrid(
   { rowData, columnDefs }: GridProps,
   ref
 ) {
   let tableRef: any = useRef(null);
+
+  const [selectedRow, setSelectedRow] = useState<IDeviceData | null>(null);
 
   return (
     <>
@@ -63,7 +68,26 @@ const TableGrid = forwardRef(function TableGrid(
                 <td>{row.totalPowerUsed.toFixed(2)} KWh</td>
                 <td>{row.thresholdRating.toFixed(2)} KWh</td>
                 <td>
-                  <p className="font-semibold cursor-pointer">View</p>
+                  <span
+                    onClick={() => {
+                      setSelectedRow(row);
+                      document.body.style.overflow = "hidden";
+                    }}
+                    className="font-semibold cursor-pointer select-none"
+                  >
+                    View
+                  </span>
+                  {selectedRow &&
+                    createPortal(
+                      <Appliance
+                        closeModal={() => {
+                          setSelectedRow(null);
+                          document.body.style.overflow = "auto";
+                        }}
+                        appliance={selectedRow}
+                      />,
+                      document.body
+                    )}
                 </td>
               </tr>
             ))}

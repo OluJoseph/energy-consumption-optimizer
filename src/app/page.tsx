@@ -10,8 +10,16 @@ export default function Home() {
     totalEnergyBudget: 10000,
     dataset: generateUsageDataset(72),
   };
-
+  
   const appliances: IDeviceData[] = generateDeviceData();
+
+  const columnDefs = [
+	{ headerName: "Device Name" },
+	{ headerName: "Status" },
+	{ headerName: "Power Rating" },
+	{ headerName: "Power Used" },
+	{ headerName: "Threshold Rating" },
+  ];
 
   const getAlerts = () => {
     const alertNodes = appliances.map((appliance: IDeviceData, idx) => {
@@ -79,14 +87,6 @@ export default function Home() {
 
     return alertNodes;
   };
-
-  const columnDefs = [
-    { headerName: "Device Name" },
-    { headerName: "Status" },
-    { headerName: "Power Rating" },
-    { headerName: "Power Used" },
-    { headerName: "Threshold Rating" },
-  ];
 
   return (
     <main className="flex flex-col items-start justify-between gap-4 pb-20">
