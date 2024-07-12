@@ -1,3 +1,5 @@
+"use client";
+
 import { axisClasses, LineChart } from "@mui/x-charts";
 import { IUsageRecord } from "../util/constants";
 
