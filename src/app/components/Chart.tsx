@@ -2,7 +2,7 @@
 
 import { axisClasses, LineChart } from "@mui/x-charts";
 import { IUsageRecord } from "../util/constants";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface ChartProps {
   dataset: IUsageRecord[];
@@ -15,9 +15,11 @@ const customize = {
 };
 
 const Chart = ({ dataset }: ChartProps) => {
-  const [isDarkMode] = useState<boolean>(
-    window?.matchMedia("(prefers-color-scheme: dark)").matches
-  );
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
+
+  useEffect(() => {
+    setIsDarkMode(window?.matchMedia("(prefers-color-scheme: dark)").matches);
+  }, []);
 
   return (
     <div className="w-full">
