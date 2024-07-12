@@ -2,6 +2,7 @@
 
 import { axisClasses, LineChart } from "@mui/x-charts";
 import { IUsageRecord } from "../util/constants";
+import { useState } from "react";
 
 interface ChartProps {
   dataset: IUsageRecord[];
@@ -14,20 +15,20 @@ const customize = {
 };
 
 const Chart = ({ dataset }: ChartProps) => {
+  const [isDarkMode] = useState<boolean>(
+    window?.matchMedia("(prefers-color-scheme: dark)").matches
+  );
+
   return (
     <div className="w-full">
       <LineChart
         sx={{
           [`.${axisClasses.root}`]: {
             [`.${axisClasses.tick}, .${axisClasses.line}`]: {
-              stroke: window?.matchMedia("(prefers-color-scheme: dark)").matches
-                ? "white"
-                : "black",
+              stroke: isDarkMode ? "white" : "black",
             },
             [`.${axisClasses.tickLabel}`]: {
-              fill: window?.matchMedia("(prefers-color-scheme: dark)").matches
-                ? "white"
-                : "black",
+              fill: isDarkMode ? "white" : "black",
             },
           },
         }}
@@ -45,9 +46,7 @@ const Chart = ({ dataset }: ChartProps) => {
           {
             dataKey: "totalEnergyUsed",
             label: "Total Energy used",
-            color: window?.matchMedia("(prefers-color-scheme: dark)").matches
-              ? "white"
-              : "black",
+            color: isDarkMode ? "white" : "black",
           },
         ]}
         {...customize}
