@@ -1,112 +1,139 @@
-import Image from "next/image";
+import TableGrid from "./components/Grid/TableGrid";
+import PageHeader from "./components/PageHeader";
+import TotalUsageChart from "./components/TotalUsageChart";
+import { generateDeviceData } from "./mockData/devices";
+import { generateUsageDataset } from "./mockData/usageData";
+import { DeviceStatus, IDeviceData, IUsage } from "./util/constants";
 
 export default function Home() {
-  return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:size-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+  const totalUsageData: IUsage = {
+    totalEnergyBudget: 10000,
+    dataset: generateUsageDataset(72),
+  };
+
+  const appliances: IDeviceData[] = generateDeviceData();
+
+  const getAlerts = () => {
+    const alertNodes = appliances.map((appliance: IDeviceData, idx) => {
+      return (
+        appliance.totalPowerUsed > appliance.thresholdRating && (
+          <li
+            key={idx}
+            className="flex flex-col gap-4 border-b py-4 border-gray-100 dark:border-gray-800"
           >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
+            <div className="flex justify-between items-start">
+              <div>
+                <p className="font-semibold">{appliance.deviceName}</p>
+                <p className="text-gray-600 dark:text-slate-400 text-sm">
+                  Avg. daily power usage{" "}
+                  {appliance.averageDailyUsage.toFixed(2)}KWh
+                </p>
+              </div>
+              <p className="text-sm flex items-center gap-1">
+                <span
+                  className={`material-symbols-rounded ${
+                    appliance.status === DeviceStatus.always_on
+                      ? "text-green-700"
+                      : appliance.status === DeviceStatus.idle
+                      ? "text-orange-700"
+                      : ""
+                  }`}
+                  style={{ fontSize: "12px" }}
+                >
+                  radio_button_checked
+                </span>
+                {appliance.status}
+              </p>
+            </div>
+            <div className="rounded-lg border border-orange-100 dark:border-gray-800 bg-[#fcfaf6] dark:bg-gray-800 p-4 flex gap-3">
+              <div className="border h-fit border-orange-300 flex items-center justify-center rounded-md p-1 ">
+                <span
+                  className="material-symbols-rounded text-orange-400"
+                  style={{ fontSize: "12px" }}
+                >
+                  error
+                </span>
+              </div>
+              <div>
+                <p className="font-semibold text-gray-800 dark:text-slate-300 mb-1 text-sm">
+                  Power Alert
+                </p>
+                <p className="text-sm text-gray-600 mb-2">
+                  This appliance is using above its threshold power. Kindly take
+                  action
+                </p>
+                <ul className="flex gap-4">
+                  <li className="cursor-pointer text-sm font-semibold">
+                    Allow
+                  </li>
+                  <li className="text-orange-600 font-medium cursor-pointer text-sm">
+                    Turn Off
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </li>
+        )
+      );
+    });
 
-      <div className="relative z-[-1] flex place-items-center before:absolute before:h-[300px] before:w-full before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 sm:before:w-[480px] sm:after:w-[240px] before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
+    return alertNodes;
+  };
+
+  const columnDefs = [
+    { headerName: "Device Name" },
+    { headerName: "Status" },
+    { headerName: "Power Rating" },
+    { headerName: "Power Used" },
+    { headerName: "Threshold Rating" },
+  ];
+
+  return (
+    <main className="flex flex-col items-start justify-between gap-4 pb-20">
+      <div className="w-full sticky top-[81px] z-50">
+        <PageHeader
+          title={`Welcome, ${"User"}`}
+          message="Here's an overview of all your appliances"
+          icon={<span className="material-symbols-rounded">home</span>}
         />
+        <hr className="dark:border-gray-800 border-gray-100 w-full" />
       </div>
-
-      <div className="mb-32 grid text-center lg:mb-0 lg:w-full lg:max-w-5xl lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Docs{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Learn{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Templates{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Explore starter templates for Next.js.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Deploy{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-balance text-sm opacity-50">
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
+      <div className="flex gap-4 w-full px-12">
+        <div className="flex-1 flex flex-col gap-4">
+          <TotalUsageChart usageData={totalUsageData} />
+          <div className="w-full bg-white dark:bg-gray-800 p-4 border-slate-100 dark:border-gray-800 rounded-lg">
+            <TableGrid rowData={appliances} columnDefs={columnDefs} />
+          </div>
+        </div>
+        <div className="flex flex-col gap-4 h-fit max-h-[400px]">
+          <div className="p-4 bg-white dark:bg-gray-900 rounded-lg border border-gray-100 dark:border-gray-800 min-h-[400px] h-fit flex flex-col ">
+            <p className="pb-2 text-gray-700 dark:text-slate-300 font-semibold border-b border-gray-100 dark:border-gray-800">
+              Alerts
+            </p>
+            <ul className="flex flex-col gap-2 h-full overflow-auto pr-4">
+              {getAlerts()}
+            </ul>
+          </div>
+          <div className="relative p-4 bg-white dark:bg-gray-900 rounded-lg border border-gray-100 dark:border-gray-800 max-h-[450px] min-h-[300px] h-fit flex flex-col">
+            <p className="pb-2 text-gray-700 dark:text-slate-300 font-semibold border-b border-gray-100 dark:border-gray-800">
+              Recent Activity
+            </p>
+            <ul className="flex flex-col gap-2 h-full overflow-auto pr-4">
+              <li className="py-4 border-b border-gray-100 dark:border-gray-800 flex gap-2">
+                <span
+                  className="material-symbols-rounded py-1"
+                  style={{ fontSize: "16px" }}
+                >
+                  switches
+                </span>
+                <div>
+                  <p className="text-sm mb-1">You turned off Air Conditioner</p>
+                  <p className="text-sm text-gray-500">Updated 1 minutes ago</p>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
     </main>
   );
