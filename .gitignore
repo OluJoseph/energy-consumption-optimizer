@@ -19,7 +19,6 @@
 # misc
 .DS_Store
 *.pem
-/src/app/mockData
 
 # debug
 npm-debug.log*
