@@ -13,7 +13,7 @@ const customize = {
 
 const Chart = ({ dataset }: ChartProps) => {
   return (
-    <div>
+    <div className="w-full">
       <LineChart
         dataset={dataset as any}
         xAxis={[
