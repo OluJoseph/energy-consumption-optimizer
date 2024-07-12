@@ -1,4 +1,4 @@
-import { LineChart } from "@mui/x-charts";
+import { axisClasses, LineChart } from "@mui/x-charts";
 import { IUsageRecord } from "../util/constants";
 
 interface ChartProps {
@@ -15,6 +15,20 @@ const Chart = ({ dataset }: ChartProps) => {
   return (
     <div className="w-full">
       <LineChart
+        sx={{
+          [`.${axisClasses.root}`]: {
+            [`.${axisClasses.tick}, .${axisClasses.line}`]: {
+              stroke: window?.matchMedia("(prefers-color-scheme: dark)").matches
+                ? "white"
+                : "black",
+            },
+            [`.${axisClasses.tickLabel}`]: {
+              fill: window?.matchMedia("(prefers-color-scheme: dark)").matches
+                ? "white"
+                : "black",
+            },
+          },
+        }}
         dataset={dataset as any}
         xAxis={[
           {
@@ -29,7 +43,9 @@ const Chart = ({ dataset }: ChartProps) => {
           {
             dataKey: "totalEnergyUsed",
             label: "Total Energy used",
-            color: "black",
+            color: window?.matchMedia("(prefers-color-scheme: dark)").matches
+              ? "white"
+              : "black",
           },
         ]}
         {...customize}
