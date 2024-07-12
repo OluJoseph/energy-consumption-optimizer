@@ -51,8 +51,9 @@ const Appliance = ({ closeModal, appliance }: ApplianceModalProps) => {
 
               <div>
                 <p className="text-sm text-gray-700 dark:text-slate-400 mb-3">
-                  This appliance's current power is at{" "}
-                  {appliance.totalPowerUsed.toFixed(2)}KWh of its{" "}
+                  {"This appliance's current power is at "}
+                  {appliance.totalPowerUsed.toFixed(2)}
+                  {"KWh of its "}
                   {appliance.thresholdRating.toFixed(2)}KWh threshold power
                 </p>
                 <ul className="flex gap-4">
