@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Instrument_Sans } from "next/font/google";
 import "./globals.css";
+import TopHeader from "./components/TopHeader";
 
-const inter = Inter({ subsets: ["latin"] });
+const instrument_Sans = Instrument_Sans({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -16,7 +17,29 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <head>
+		<title>Home Energy Optimizer</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+        />
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+        />
+      </head>
+      <body
+        className={`${instrument_Sans.className} bg-[#F9FAFB] dark:bg-gray-950 antialiased h-screen overflow-x-hidden`}
+      >
+        <div className="relative h-full">
+          <div className="sticky top-0 z-50">
+            <TopHeader />
+            <hr className="dark:border-gray-800 border-gray-100" />
+          </div>
+          {children}
+        </div>
+      </body>
     </html>
   );
 }
