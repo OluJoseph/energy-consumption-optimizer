@@ -1,5 +1,7 @@
 ## The mock data used is generated using random values
 
+## Web app is currently optimized for desktop view only
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
